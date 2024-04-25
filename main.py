@@ -4,6 +4,8 @@ import yt_dlp as ytdlp
 import os
 import uuid
 import time
+import traceback
+
 
 # Assign provided values
 bot_token = '6999401413:AAHgF1ZpUsCT5MgWX1Wky7GbegyeHvzi2AU'
@@ -38,8 +40,10 @@ def download_video(client, message: Message):
                     message.reply_video(video=filename, caption=title)
                     os.remove(filename)
                     print("video sent")
-                else:
-                    message.reply_text("Error: Failed to download the video.")
+                except Exception as e:
+                    error_message = f"Error: Failed to download the video. Details: {str(e)}\n\n{traceback.format_exc()}"
+                    message.reply_text(error_message)
+
             else:
                 message.reply_text("Error: Unable to fetch video information.")
     except Exception as e:
