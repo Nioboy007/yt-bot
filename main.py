@@ -30,8 +30,7 @@ def download_video(client, message: Message):
             if title:
                 message.reply_text(f"Downloading: {title}")
                 unique_id = uuid.uuid4().hex
-                filename = f"{title}.mp4"  # Save in the 'downloads' folder
-                os.makedirs("downloads", exist_ok=True)  # Create 'downloads' folder if it doesn't exist
+                filename = f"{title}.mp4" 
                 ydl.download([video_url])
                 print(f"Video downloaded ⚠   file path= {filename}")
 
