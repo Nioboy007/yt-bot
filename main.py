@@ -3,6 +3,7 @@ from pyrogram.types import Message
 import yt_dlp as ytdlp
 import os
 import uuid
+import time
 
 # Assign provided values
 bot_token = '6999401413:AAHgF1ZpUsCT5MgWX1Wky7GbegyeHvzi2AU'
@@ -28,8 +29,14 @@ def download_video(client, message: Message):
             if title:
                 message.reply_text(f"Downloading: {title}")
                 unique_id = uuid.uuid4().hex
-                filename = f"{unique_id}.mp4"
+                filename = f"downloads/{unique_id}.mp4"  # Save in the 'downloads' folder
+                os.makedirs("downloads", exist_ok=True)  # Create 'downloads' folder if it doesn't exist
                 ydl.download([video_url])
+                
+                # Check if the file is fully downloaded
+                while not os.path.exists(filename) or os.path.getsize(filename) < 1000:
+                    time.sleep(1)
+
                 if os.path.exists(filename):
                     message.reply_video(open(filename, "rb"), caption=title)
                     os.remove(filename)
