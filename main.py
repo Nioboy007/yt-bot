@@ -4,6 +4,7 @@ from pyrogram.types import Message
 import yt_dlp as ytdlp
 import os
 import uuid
+import re
 
 # Assign provided values
 bot_token = '6999401413:AAHgF1ZpUsCT5MgWX1Wky7GbegyeHvzi2AU'
@@ -30,7 +31,8 @@ def download_video(client, message: Message):
             if title:
                 message.reply_text(f"Downloading: {title}")
                 unique_id = uuid.uuid4().hex
-                filename = f"{title}.mp4" 
+                # Remove special characters from title
+                filename = re.sub(r'[^\w\s]', '', title) + ".mp4" 
                 ydl.download([video_url])
                 print(f"Video downloaded ⚠   file path= {filename}")
 
