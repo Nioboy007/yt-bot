@@ -1,16 +1,15 @@
+import traceback
 from pyrogram import Client, filters
 from pyrogram.types import Message
 import yt_dlp as ytdlp
 import os
 import uuid
-import time
-import traceback
-
 
 # Assign provided values
 bot_token = '6999401413:AAHgF1ZpUsCT5MgWX1Wky7GbegyeHvzi2AU'
-api_id = 10471716
+api_id = '10471716'
 api_hash = 'f8a1b21a13af154596e2ff5bed164860'
+
 
 # Initialize the Pyrogram client
 app = Client("yt_dlp_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
@@ -40,14 +39,11 @@ def download_video(client, message: Message):
                     message.reply_video(video=filename, caption=title)
                     os.remove(filename)
                     print("video sent")
-                except Exception as e:
-                    error_message = f"Error: Failed to download the video. Details: {str(e)}\n\n{traceback.format_exc()}"
-                    message.reply_text(error_message)
-
             else:
                 message.reply_text("Error: Unable to fetch video information.")
     except Exception as e:
-        message.reply_text(f"An error occurred: {str(e)}")
+        error_message = f"Error: Failed to download the video. Details: {str(e)}\n\n{traceback.format_exc()}"
+        message.reply_text(error_message)
 
 # Error handler
 @app.on_message(filters.private)
