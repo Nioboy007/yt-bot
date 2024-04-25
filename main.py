@@ -35,7 +35,7 @@ def download_video(client, message: Message):
                 print(f"Video downloaded ⚠   file path= {filename}")
 
                 if os.path.exists(filename):
-                    message.reply_video(open(filename, "rb"), caption=title)
+                    message.reply_video(video=filename, caption=title)
                     os.remove(filename)
                     print("video sent")
                 else:
