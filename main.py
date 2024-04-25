@@ -3,11 +3,12 @@ from pyrogram.types import Message
 import yt_dlp as ytdlp
 import os
 
-# Initialize the Pyrogram client
-api_id = "10471716"
-api_hash = "f8a1b21a13af154596e2ff5bed164860"
-bot_token = "6999401413:AAHgF1ZpUsCT5MgWX1Wky7GbegyeHvzi2AU"
+# Assign provided values
+bot_token = '6999401413:AAHgF1ZpUsCT5MgWX1Wky7GbegyeHvzi2AU'
+api_id = 10471716
+api_hash = 'f8a1b21a13af154596e2ff5bed164860'
 
+# Initialize the Pyrogram client
 app = Client("yt_dlp_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
 # Handler for /start command
@@ -28,7 +29,7 @@ def download_video(client, message: Message):
                 filename = f"{title}.mp4"
                 ydl.download([video_url])
                 if os.path.exists(filename):
-                    message.reply_video(filename)
+                    message.reply_video(open(filename, "rb"), caption=title)
                     os.remove(filename)
                 else:
                     message.reply_text("Error: Failed to download the video.")
