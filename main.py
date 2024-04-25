@@ -6,7 +6,6 @@ import os
 import uuid
 import re
 
-# Assign provided values
 bot_token = '6999401413:AAHgF1ZpUsCT5MgWX1Wky7GbegyeHvzi2AU'
 api_id = '10471716'
 api_hash = 'f8a1b21a13af154596e2ff5bed164860'
@@ -14,6 +13,10 @@ api_hash = 'f8a1b21a13af154596e2ff5bed164860'
 
 # Initialize the Pyrogram client
 app = Client("yt_dlp_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
+
+# Function to remove unsupported characters from filename
+def sanitize_filename(filename):
+    return re.sub(r'[\\/|*?"<>:]', '', filename)
 
 # Handler for /start command
 @app.on_message(filters.command("start"))
@@ -31,15 +34,17 @@ def download_video(client, message: Message):
             if title:
                 message.reply_text(f"Downloading: {title}")
                 unique_id = uuid.uuid4().hex
-                # Remove special characters from title
-                filename = "video.mp4"
+                # Download the video
                 ydl.download([video_url])
-                print(f"Video downloaded ⚠   file path= {filename}")
-
-                if os.path.exists(filename):
-                    message.reply_video(video=filename, caption=title)
-                    os.remove(filename)
-                    print("video sent")
+                # Get the default downloaded filename
+                filename = ydl.prepare_filename(info)
+                # Rename the file by removing unsupported characters
+                new_filename = sanitize_filename(title) + ".mp4"
+                os.rename(filename, new_filename)
+                # Send the renamed file to the user
+                message.reply_video(video=new_filename, caption=title)
+                # Remove the file after sending
+                os.remove(new_filename)
             else:
                 message.reply_text("Error: Unable to fetch video information.")
     except Exception as e:
