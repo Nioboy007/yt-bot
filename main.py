@@ -36,10 +36,12 @@ def download_video(client, message: Message):
                 # Check if the file is fully downloaded
                 while not os.path.exists(filename) or os.path.getsize(filename) < 1000:
                     time.sleep(1)
+                print("path exist")
 
                 if os.path.exists(filename):
                     message.reply_video(open(filename, "rb"), caption=title)
                     os.remove(filename)
+                    print("video sent")
                 else:
                     message.reply_text("Error: Failed to download the video.")
             else:
