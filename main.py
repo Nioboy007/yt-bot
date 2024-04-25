@@ -32,11 +32,7 @@ def download_video(client, message: Message):
                 filename = f"downloads/{unique_id}.mp4"  # Save in the 'downloads' folder
                 os.makedirs("downloads", exist_ok=True)  # Create 'downloads' folder if it doesn't exist
                 ydl.download([video_url])
-                
-                # Check if the file is fully downloaded
-                while not os.path.exists(filename) or os.path.getsize(filename) < 1000:
-                    time.sleep(1)
-                print("path exist")
+                print("Video downloaded ⚠")
 
                 if os.path.exists(filename):
                     message.reply_video(open(filename, "rb"), caption=title)
