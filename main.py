@@ -32,7 +32,7 @@ def download_video(client, message: Message):
                 message.reply_text(f"Downloading: {title}")
                 unique_id = uuid.uuid4().hex
                 # Remove special characters from title
-                filename = re.sub(r'[^\w\s]', '', title) + ".mp4" 
+                filename = video.mp4
                 ydl.download([video_url])
                 print(f"Video downloaded ⚠   file path= {filename}")
 
